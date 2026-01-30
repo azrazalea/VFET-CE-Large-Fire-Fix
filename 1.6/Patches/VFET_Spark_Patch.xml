@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+    <!-- Replace VFET's Large Fire spark with our visual-only version -->
+    <!-- This prevents Combat Extended's fire attachment from triggering -->
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/ThingDef[defName="VFET_LargeFireSpark"]/thingClass</xpath>
+        <value>
+            <thingClass>VFET_CE_LargeFireFix.Spark_Visual</thingClass>
+        </value>
+    </Operation>
+</Patch>

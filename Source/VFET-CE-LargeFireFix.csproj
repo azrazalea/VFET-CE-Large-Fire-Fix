@@ -1,0 +1,61 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <AssemblyName>VFET-CE-LargeFireFix</AssemblyName>
+    <RootNamespace>VFET_CE_LargeFireFix</RootNamespace>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+
+    <!-- Output directly to mod folder -->
+    <OutputPath>../1.6/Assemblies/</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+
+    <!-- No debug symbols needed -->
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+
+    <!-- Enable post-build events -->
+    <RunPostBuildEvent>Always</RunPostBuildEvent>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <RimWorldPath Condition="'$(RimWorldPath)' == ''">C:\Program Files (x86)\Steam\steamapps\common\RimWorld</RimWorldPath>
+    <ModName>VFET-CE-Large-Fire-Fix</ModName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- RimWorld Core References -->
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldPath)\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldPath)\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+  <!-- Post-build deployment -->
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Message Text="Deploying $(ModName) to RimWorld..." Importance="high" />
+
+    <!-- Remove existing mod from RimWorld if it exists -->
+    <RemoveDir Directories="$(RimWorldPath)\Mods\$(ModName)" Condition="Exists('$(RimWorldPath)\Mods\$(ModName)')" />
+
+    <!-- Define what to copy -->
+    <ItemGroup>
+      <!-- 1.6 folder -->
+      <SixteenFiles Include="$(MSBuildProjectDirectory)\..\1.6\**\*.*" />
+
+      <!-- About folder -->
+      <AboutFiles Include="$(MSBuildProjectDirectory)\..\About\**\*.*" />
+    </ItemGroup>
+
+    <!-- Copy all defined files -->
+    <Copy SourceFiles="@(SixteenFiles)" DestinationFiles="@(SixteenFiles->'$(RimWorldPath)\Mods\$(ModName)\1.6\%(RecursiveDir)%(Filename)%(Extension)')" />
+    <Copy SourceFiles="@(AboutFiles)" DestinationFiles="@(AboutFiles->'$(RimWorldPath)\Mods\$(ModName)\About\%(RecursiveDir)%(Filename)%(Extension)')" />
+
+    <Message Text="$(ModName) deployed successfully to $(RimWorldPath)\Mods\$(ModName)" Importance="high" />
+  </Target>
+</Project>
