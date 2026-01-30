@@ -1,0 +1,18 @@
+Fixes an issue where the Large Fire from Vanilla Factions Expanded - Tribals constantly sets pawns on fire when Combat Extended is installed.
+
+[h1]The Problem[/h1]
+VFET's Large Fire spawns visual sparks every ~0.5 seconds. These sparks use RimWorld's vanilla Spark class which calls FireUtility.TryStartFireIn() on impact. Combat Extended patches this method to add a 50% chance for pawns at that location to catch fire. Combined, this causes pawns near the fire to constantly ignite.
+
+[h1]The Fix[/h1]
+This mod replaces VFET's spark with a visual-only version that doesn't attempt to start fires. Campfire sparks are purely decorative and shouldn't be setting pawns ablaze anyway.
+
+[h1]Requirements[/h1]
+[list]
+[*] [url=https://steamcommunity.com/workshop/filedetails/?id=2234821600]Vanilla Factions Expanded - Tribals[/url]
+[*] [url=https://steamcommunity.com/workshop/filedetails/?id=2890901044]Combat Extended[/url]
+[/list]
+
+Load after both VFET and Combat Extended.
+
+[h1]Source Code[/h1]
+[url=https://github.com/azrazalea/VFET-CE-Large-Fire-Fix]GitHub[/url]
